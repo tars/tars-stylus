@@ -1,0 +1,109 @@
+  $i_city-x = 0px;
+  $i_city-y = 9px;
+  $i_city-offset-x = 0px;
+  $i_city-offset-y = -9px;
+  $i_city-width = 22px;
+  $i_city-height = 22px;
+  $i_city-total-width = 312px;
+  $i_city-total-height = 302px;
+  $i_city-image = 'svg-fallback-sprite.png';
+  $i_city = 0px 9px 0px -9px 22px 22px 312px 302px 'svg-fallback-sprite.png' 'i_city';
+  $i_city-name = 'i_city';
+  $i_city_big-x = 0px;
+  $i_city_big-y = 79px;
+  $i_city_big-offset-x = 0px;
+  $i_city_big-offset-y = -79px;
+  $i_city_big-width = 27px;
+  $i_city_big-height = 27px;
+  $i_city_big-total-width = 312px;
+  $i_city_big-total-height = 302px;
+  $i_city_big-image = 'svg-fallback-sprite.png';
+  $i_city_big = 0px 79px 0px -79px 27px 27px 312px 302px 'svg-fallback-sprite.png' 'i_city_big';
+  $i_city_big-name = 'i_city_big';
+  $i_close-x = 0px;
+  $i_close-y = 0px;
+  $i_close-offset-x = 0px;
+  $i_close-offset-y = 0px;
+  $i_close-width = 8px;
+  $i_close-height = 9px;
+  $i_close-total-width = 312px;
+  $i_close-total-height = 302px;
+  $i_close-image = 'svg-fallback-sprite.png';
+  $i_close = 0px 0px 0px 0px 8px 9px 312px 302px 'svg-fallback-sprite.png' 'i_close';
+  $i_close-name = 'i_close';
+  $i_edu-x = 0px;
+  $i_edu-y = 53px;
+  $i_edu-offset-x = 0px;
+  $i_edu-offset-y = -53px;
+  $i_edu-width = 35px;
+  $i_edu-height = 26px;
+  $i_edu-total-width = 312px;
+  $i_edu-total-height = 302px;
+  $i_edu-image = 'svg-fallback-sprite.png';
+  $i_edu = 0px 53px 0px -53px 35px 26px 312px 302px 'svg-fallback-sprite.png' 'i_edu';
+  $i_edu-name = 'i_edu';
+  $i_logo-x = 0px;
+  $i_logo-y = 169px;
+  $i_logo-offset-x = 0px;
+  $i_logo-offset-y = -169px;
+  $i_logo-width = 312px;
+  $i_logo-height = 133px;
+  $i_logo-total-width = 312px;
+  $i_logo-total-height = 302px;
+  $i_logo-image = 'svg-fallback-sprite.png';
+  $i_logo = 0px 169px 0px -169px 312px 133px 312px 302px 'svg-fallback-sprite.png' 'i_logo';
+  $i_logo-name = 'i_logo';
+  $i_pdf-file-x = 0px;
+  $i_pdf-file-y = 31px;
+  $i_pdf-file-offset-x = 0px;
+  $i_pdf-file-offset-y = -31px;
+  $i_pdf-file-width = 19px;
+  $i_pdf-file-height = 22px;
+  $i_pdf-file-total-width = 312px;
+  $i_pdf-file-total-height = 302px;
+  $i_pdf-file-image = 'svg-fallback-sprite.png';
+  $i_pdf-file = 0px 31px 0px -31px 19px 22px 312px 302px 'svg-fallback-sprite.png' 'i_pdf-file';
+  $i_pdf-file-name = 'i_pdf-file';
+  $i_settings-x = 0px;
+  $i_settings-y = 136px;
+  $i_settings-offset-x = 0px;
+  $i_settings-offset-y = -136px;
+  $i_settings-width = 33px;
+  $i_settings-height = 33px;
+  $i_settings-total-width = 312px;
+  $i_settings-total-height = 302px;
+  $i_settings-image = 'svg-fallback-sprite.png';
+  $i_settings = 0px 136px 0px -136px 33px 33px 312px 302px 'svg-fallback-sprite.png' 'i_settings';
+  $i_settings-name = 'i_settings';
+  $i_stat-x = 0px;
+  $i_stat-y = 106px;
+  $i_stat-offset-x = 0px;
+  $i_stat-offset-y = -106px;
+  $i_stat-width = 31px;
+  $i_stat-height = 30px;
+  $i_stat-total-width = 312px;
+  $i_stat-total-height = 302px;
+  $i_stat-image = 'svg-fallback-sprite.png';
+  $i_stat = 0px 106px 0px -106px 31px 30px 312px 302px 'svg-fallback-sprite.png' 'i_stat';
+  $i_stat-name = 'i_stat';
+
+  svg-sprite-width($svg-sprite) {
+    width: $svg-sprite[4];
+  }
+
+
+  svg-sprite-height($svg-sprite) {
+    height: $svg-sprite[5];
+  }
+
+  svg-sprite-position($svg-sprite) {
+    background-position: $svg-sprite[2] $svg-sprite[3];
+  }
+
+  svg-image-name($svg-sprite) {
+    background-image: url('../img/svg/' + $svg-sprite[9] + '.svg');
+  }
+
+  svg-fallback-sprite-image($svg-sprite) {
+    background-image: url('../img/rasterSvgSprite/' + $svg-sprite[8]);
+  }
