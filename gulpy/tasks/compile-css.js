@@ -3,6 +3,7 @@ var concat = require('gulp-concat');
 var stylus = require('gulp-stylus');
 var gulpif = require('gulp-if');
 var autoprefix = require('gulp-autoprefixer');
+var replace = require('gulp-replace-task');
 var notify = require('gulp-notify');
 var projectConfig = require('../../../projectConfig');
 var notifyConfig = projectConfig.notifyConfig;
@@ -41,9 +42,22 @@ var stylusFilesToConcatinate = [
  */
 module.exports = function(buildOptions) {
 
+    var patterns = [];
+
+    patterns.push(
+        {
+            match: '%=staticPrefix=%',
+            replacement: projectConfig.staticPrefix
+        }
+    );
+
     return gulp.task('compile-css', function(cb) {
         gulp.src(stylusFilesToConcatinate)
             .pipe(concat('main' + buildOptions.hash + '.styl'))
+            .pipe(replace({
+                patterns: patterns,
+                usePrefix: false
+            }))
             .pipe(stylus())
             .on('error', notify.onError(function (error) {
                 return '\nAn error occurred while compiling css.\nLook in the console for details.\n' + error;

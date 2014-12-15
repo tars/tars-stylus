@@ -5,6 +5,7 @@ var gulpif = require('gulp-if');
 var gutil = require('gulp-util');
 var plumber = require('gulp-plumber');
 var autoprefix = require('gulp-autoprefixer');
+var replace = require('gulp-replace-task');
 var notify = require('gulp-notify');
 var projectConfig = require('../../../projectConfig');
 var notifyConfig = projectConfig.notifyConfig;
@@ -42,11 +43,24 @@ var stylusFilesToConcatinate = [
  */
 module.exports = function(buildOptions) {
 
+    var patterns = [];
+
+    patterns.push(
+        {
+            match: '%=staticPrefix=%',
+            replacement: projectConfig.staticPrefix
+        }
+    );
+
     return gulp.task('compile-css-for-ie9', function(cb) {
         if (gutil.env.ie9) {
             return gulp.src(stylusFilesToConcatinate)
                 .pipe(plumber())
                 .pipe(concat('main_ie9' + buildOptions.hash + '.styl'))
+                .pipe(replace({
+                    patterns: patterns,
+                    usePrefix: false
+                }))
                 .pipe(stylus())
                 .on('error', notify.onError(function (error) {
                     return '\nAn error occurred while compiling css for ie9.\nLook in the console for details.\n' + error;

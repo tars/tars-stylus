@@ -19,20 +19,19 @@ module.exports = function(buildOptions) {
 
         var spriteData = [],
             dpiLength = dpi.length,
-            dpi144 = false,
             dpi192 = false,
-            dpi288 = false;
+            dpi288 = false,
+            dpi384 = false;
 
         for (var i = 0; i < dpiLength; i++) {
-            if (dpi[i] == 144) {
-                dpi144 = true;
-            } else if (dpi[i] == 192) {
+            if (dpi[i] == 192) {
                 dpi192 = true;
-            } else if (dpi[i] == 288) {
+            } else if (dpi[i] === 288) {
                 dpi288 = true;
+            } else if (dpi[i] === 384) {
+                dpi384 = true;
             }
         }
-
 
         for (var i = 0; i < dpiLength; i++) {
             spriteData.push(gulp.src('./markup/' + projectConfig.fs.staticFolderName + '/' + projectConfig.fs.imagesFolderName + '/sprite/' + dpi[i] + 'dpi/*.png')
@@ -46,9 +45,9 @@ module.exports = function(buildOptions) {
                                 imagemagick: true
                             },
                             cssOpts: {
-                                dpi144: dpi144,
                                 dpi192: dpi192,
-                                dpi288: dpi288
+                                dpi288: dpi288,
+                                dpi384: dpi384
                             },
                             cssTemplate: './markup/' + projectConfig.fs.staticFolderName + '/stylus/spriteGeneratorTemplates/stylus.sprite.mustache'
                         }
