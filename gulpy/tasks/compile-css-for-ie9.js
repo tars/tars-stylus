@@ -7,34 +7,34 @@ var plumber = require('gulp-plumber');
 var autoprefix = require('gulp-autoprefixer');
 var replace = require('gulp-replace-task');
 var notify = require('gulp-notify');
-var projectConfig = require('../../../tars-config');
-var notifyConfig = projectConfig.notifyConfig;
+var tarsConfig = require('../../../tars-config');
+var notifyConfig = tarsConfig.notifyConfig;
 var modifyDate = require('../../helpers/modifyDateFormatter');
 var browserSync = require('browser-sync');
 
 var stylusFilesToConcatinate = [
-        './markup/' + projectConfig.fs.staticFolderName + '/stylus/normalize.styl',
-        './markup/' + projectConfig.fs.staticFolderName + '/stylus/mixins.styl',
-        './markup/' + projectConfig.fs.staticFolderName + '/stylus/spritesStylus/sprite96.styl',
-        './markup/' + projectConfig.fs.staticFolderName + '/stylus/spritesStylus/sprite.styl'
+        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/normalize.styl',
+        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/mixins.styl',
+        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/spritesStylus/sprite96.styl',
+        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/spritesStylus/sprite.styl'
     ];
 
-    if (projectConfig.useSVG) {
+    if (tarsConfig.useSVG) {
         stylusFilesToConcatinate.push(
-            './markup/' + projectConfig.fs.staticFolderName + '/stylus/spritesStylus/svg-fallback-sprite.styl',
-            './markup/' + projectConfig.fs.staticFolderName + '/stylus/spritesStylus/svg-sprite.styl'
+            './markup/' + tarsConfig.fs.staticFolderName + '/stylus/spritesStylus/svg-fallback-sprite.styl',
+            './markup/' + tarsConfig.fs.staticFolderName + '/stylus/spritesStylus/svg-sprite.styl'
         );
     }
 
     stylusFilesToConcatinate.push(
-        './markup/' + projectConfig.fs.staticFolderName + '/stylus/fonts.styl',
-        './markup/' + projectConfig.fs.staticFolderName + '/stylus/vars.styl',
-        './markup/' + projectConfig.fs.staticFolderName + '/stylus/GUI.styl',
-        './markup/' + projectConfig.fs.staticFolderName + '/stylus/common.styl',
-        './markup/' + projectConfig.fs.staticFolderName + '/stylus/plugins/**/*.styl',
+        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/fonts.styl',
+        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/vars.styl',
+        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/GUI.styl',
+        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/common.styl',
+        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/plugins/**/*.styl',
         './markup/modules/*/*.styl',
         './markup/modules/*/ie/ie9.styl',
-        './markup/' + projectConfig.fs.staticFolderName + '/stylus/etc/**/*.styl'
+        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/etc/**/*.styl'
     );
 
 /**
@@ -48,7 +48,7 @@ module.exports = function(buildOptions) {
     patterns.push(
         {
             match: '%=staticPrefix=%',
-            replacement: projectConfig.staticPrefix
+            replacement: tarsConfig.staticPrefix
         }
     );
 
@@ -69,7 +69,7 @@ module.exports = function(buildOptions) {
                 .on('error', notify.onError(function (error) {
                     return '\nAn error occurred while autoprefixing css.\nLook in the console for details.\n' + error;
                 }))
-                .pipe(gulp.dest('./dev/' + projectConfig.fs.staticFolderName + '/css/'))
+                .pipe(gulp.dest('./dev/' + tarsConfig.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({stream:true}))
                 .pipe(
                     gulpif(notifyConfig.useNotify,
