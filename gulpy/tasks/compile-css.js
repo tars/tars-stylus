@@ -2,7 +2,7 @@ var gulp = require('gulp');
 var concat = require('gulp-concat');
 var stylus = require('gulp-stylus');
 var gulpif = require('gulp-if');
-var autoprefix = require('gulp-autoprefixer');
+var autoprefixer = require('gulp-autoprefixer');
 var replace = require('gulp-replace-task');
 var notify = require('gulp-notify');
 var tarsConfig = require('../../../tars-config');
@@ -15,12 +15,12 @@ var stylusFilesToConcatinate = [
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/mixins.styl',
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/spritesStylus/sprite96.styl',
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/spritesStylus/sprite.styl'
-    ],
+    ];
 
-var autoprefixerConfig = '';
+var useAutoprefixer = false;
 
 if (tarsConfig.autoprefixerConfig) {
-    autoprefixerConfig = tarsConfig.autoprefixerConfig.join(',');
+    useAutoprefixer = true;
 }
 
 if (tarsConfig.useSVG) {
@@ -67,8 +67,13 @@ module.exports = function(buildOptions) {
                 return '\nAn error occurred while compiling css.\nLook in the console for details.\n' + error;
             }))
             .pipe(
-                gulpif(autoprefixerConfig,
-                    autoprefix(autoprefixerConfig, { cascade: true })
+                gulpif(useAutoprefixer,
+                    autoprefixer(
+                        {
+                            browsers: tarsConfig.autoprefixerConfig,
+                            cascade: true
+                        }
+                    )
                 )
             )
             .on('error', notify.onError(function (error) {
