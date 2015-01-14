@@ -14,6 +14,7 @@ var browserSync = require('browser-sync');
 
 var stylusFilesToConcatinate = [
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/normalize.styl',
+        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/libraries/**/*.styl',
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/mixins.styl',
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/spritesStylus/sprite96.styl',
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/spritesStylus/sprite-ie.styl'
