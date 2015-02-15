@@ -13,6 +13,7 @@ var browserSync = require('browser-sync');
 var stylusFilesToConcatinate = [
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/normalize.styl',
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/libraries/**/*.styl',
+        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/libraries/**/*.css',
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/mixins.styl',
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/spritesStylus/sprite96.styl',
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/spritesStylus/sprite.styl'
@@ -37,6 +38,7 @@ stylusFilesToConcatinate.push(
     './markup/' + tarsConfig.fs.staticFolderName + '/stylus/GUI.styl',
     './markup/' + tarsConfig.fs.staticFolderName + '/stylus/common.styl',
     './markup/' + tarsConfig.fs.staticFolderName + '/stylus/plugins/**/*.styl',
+    './markup/' + tarsConfig.fs.staticFolderName + '/stylus/plugins/**/*.css',
     './markup/modules/*/*.styl',
     './markup/' + tarsConfig.fs.staticFolderName + '/stylus/etc/**/*.styl'
 );
