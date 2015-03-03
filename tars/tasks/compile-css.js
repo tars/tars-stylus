@@ -57,7 +57,7 @@ module.exports = function(buildOptions) {
         }
     );
 
-    return gulp.task('compile-css', function() {
+    return gulp.task('css:compile-css', function() {
         return gulp.src(stylusFilesToConcatinate)
             .pipe(concat('main' + buildOptions.hash + '.styl'))
             .pipe(replace({
