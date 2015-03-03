@@ -1,13 +1,11 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
 var stylus = require('gulp-stylus');
-var gulpif = require('gulp-if');
 var autoprefixer = require('gulp-autoprefixer');
 var replace = require('gulp-replace-task');
 var notify = require('gulp-notify');
 var tarsConfig = require('../../../tars-config');
-var notifyConfig = tarsConfig.notifyConfig;
-var modifyDate = require('../../helpers/modify-date-formatter');
+var notifier = require('../../helpers/notifier');
 var browserSync = require('browser-sync');
 
 var stylusFilesToConcatinate = [
@@ -70,7 +68,7 @@ module.exports = function(buildOptions) {
                 return '\nAn error occurred while compiling css.\nLook in the console for details.\n' + error;
             }))
             .pipe(
-                gulpif(useAutoprefixer,
+                (useAutoprefixer) ?
                     autoprefixer(
                         {
                             browsers: tarsConfig.autoprefixerConfig,
@@ -85,17 +83,7 @@ module.exports = function(buildOptions) {
             .pipe(gulp.dest('./dev/' + tarsConfig.fs.staticFolderName + '/css/'))
             .pipe(browserSync.reload({stream:true}))
             .pipe(
-                gulpif(notifyConfig.useNotify,
-                    notify({
-                        onLast: true,
-                        sound: notifyConfig.sounds.onSuccess,
-                        title: notifyConfig.title,
-                        message: 'Stylus-files\'ve been compiled. \n'+ notifyConfig.taskFinishedText +'<%= options.date %>',
-                        templateOptions: {
-                            date: modifyDate.getTimeOfModify()
-                        }
-                    })
-                )
+                notifier('Stylus-files\'ve been compiled')
             );
         });
 };
