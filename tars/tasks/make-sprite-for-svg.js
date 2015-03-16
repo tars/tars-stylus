@@ -19,7 +19,7 @@ module.exports = function(buildOptions) {
                 .pipe(svgspritesheet({
                     cssPathSvg: '',
                     templateSrc: './markup/' + tarsConfig.fs.staticFolderName + '/stylus/sprite-generator-templates/stylus.svg-sprite.mustache',
-                    templateDest: './markup/' + tarsConfig.fs.staticFolderName + '/stylus/sprites-stylus/svg-sprite.stylus'
+                    templateDest: './markup/' + tarsConfig.fs.staticFolderName + '/stylus/sprites-stylus/svg-sprite.styl'
                 }))
                 .on('error', notify.onError(function (error) {
                     return '\nAn error occurred while making fallback for svg.\nLook in the console for details.\n' + error;

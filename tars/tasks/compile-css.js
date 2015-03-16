@@ -17,7 +17,7 @@ var stylusFilesToConcatinate = [
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/libraries/**/*.css',
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/mixins.styl',
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/sprites-stylus/sprite_96.styl',
-        './markup/' + tarsConfig.fs.staticFolderName + '/less/sprites-stylus/sprite-png.styl'
+        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/sprites-stylus/sprite-png.styl'
     ];
 
 var useAutoprefixer = false;
@@ -62,7 +62,7 @@ module.exports = function(buildOptions) {
 
     return gulp.task('css:compile-css', function() {
 
-        helperStream = gulp.src(scssFilesToConcatinate);
+        helperStream = gulp.src(stylusFilesToConcatinate);
         mainStream = helperStream.pipe(addsrc.append('./markup/' + tarsConfig.fs.staticFolderName + '/stylus/etc/**/*.styl'));
         ie9Stream = helperStream.pipe(
                                 addsrc.append([

@@ -16,7 +16,7 @@ var stylusFilesToConcatinate = [
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/libraries/**/*.css',
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/mixins.styl',
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/sprites-stylus/sprite_96.styl',
-        './markup/' + tarsConfig.fs.staticFolderName + '/less/sprites-stylus/sprite-png-ie.styl'
+        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/sprites-stylus/sprite-png-ie.styl'
     ];
 
     if (tarsConfig.useSVG) {
