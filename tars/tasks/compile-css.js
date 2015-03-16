@@ -2,8 +2,10 @@ var gulp = require('gulp');
 var concat = require('gulp-concat');
 var gulpif = require('gulp-if');
 var stylus = require('gulp-stylus');
+var plumber = require('gulp-plumber');
 var autoprefixer = require('gulp-autoprefixer');
 var replace = require('gulp-replace-task');
+var addsrc = require('gulp-add-src');
 var notify = require('gulp-notify');
 var tarsConfig = require('../../../tars-config');
 var notifier = require('../../helpers/notifier');
@@ -14,8 +16,8 @@ var stylusFilesToConcatinate = [
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/libraries/**/*.styl',
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/libraries/**/*.css',
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/mixins.styl',
-        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/spritesStylus/sprite96.styl',
-        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/spritesStylus/sprite.styl'
+        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/sprites-stylus/sprite_96.styl',
+        './markup/' + tarsConfig.fs.staticFolderName + '/less/sprites-stylus/sprite-png.styl'
     ];
 
 var useAutoprefixer = false;
@@ -29,8 +31,7 @@ if (tarsConfig.autoprefixerConfig) {
 
 if (tarsConfig.useSVG) {
     stylusFilesToConcatinate.push(
-        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/spritesStylus/svg-fallback-sprite.styl',
-        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/spritesStylus/svg-sprite.styl'
+        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/sprites-stylus/svg-sprite.styl'
     );
 }
 
@@ -54,19 +55,19 @@ module.exports = function(buildOptions) {
 
     patterns.push(
         {
-            match: '%=staticPrefix=%',
-            replacement: tarsConfig.staticPrefix
+            match: '%=staticPrefixForCss=%',
+            replacement: tarsConfig.staticPrefixForCss()
         }
     );
 
     return gulp.task('css:compile-css', function() {
 
         helperStream = gulp.src(scssFilesToConcatinate);
-        mainStream = helperStream.pipe(addsrc.append('./markup/' + tarsConfig.fs.staticFolderName + '/scss/etc/**/*.styl'));
+        mainStream = helperStream.pipe(addsrc.append('./markup/' + tarsConfig.fs.staticFolderName + '/stylus/etc/**/*.styl'));
         ie9Stream = helperStream.pipe(
                                 addsrc.append([
                                         './markup/modules/*/ie/ie9.styl',
-                                        './markup/' + tarsConfig.fs.staticFolderName + '/scss/etc/**/*.styl'
+                                        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/etc/**/*.styl'
                                     ])
                             );
 

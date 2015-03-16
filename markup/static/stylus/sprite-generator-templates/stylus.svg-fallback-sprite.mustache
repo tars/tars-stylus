@@ -11,10 +11,9 @@
   ${{name}}-width = {{px.width}};
   ${{name}}-height = {{px.height}};
   ${{name}}-total-width = {{px.total_width}};
-  ${{name}}-total-height = {{px.total_height}};
+  ${{name}}-total-height=  {{px.total_height}};
   ${{name}}-image = '{{{escaped_image}}}';
   ${{name}} = {{px.x}} {{px.y}} {{px.offset_x}} {{px.offset_y}} {{px.width}} {{px.height}} {{px.total_width}} {{px.total_height}} '{{{escaped_image}}}' '{{{name}}}';
-  ${{name}}-name = '{{{name}}}';
 {{/items}}
 
 {{#options.functions}}
@@ -22,20 +21,26 @@
     width: $svg-sprite[4];
   }
 
-
   svg-sprite-height($svg-sprite) {
     height: $svg-sprite[5];
   }
 
   svg-sprite-position($svg-sprite) {
-    background-position: $svg-sprite[2] $svg-sprite[3];
+    $svg-sprite-offset-x = $svg-sprite[2];
+    $svg-sprite-offset-y = $svg-sprite[3];
+    background-position: $svg-sprite-offset-x  $svg-sprite-offset-y;
   }
 
-  svg-image-name($svg-sprite) {
-    background-image: url('../img/svg/' + $svg-sprite[9] + '.svg');
+  svg-sprite-image($svg-sprite) {
+    background-image: url('%=staticPrefixForCss=%rastered-svg-sprite/' + $svg-sprite[8]);
   }
 
-  svg-fallback-sprite-image($svg-sprite) {
-    background-image: url('../img/rasterSvgSprite/' + $svg-sprite[8]);
+  bg-svg($svg-sprite, $repeat = no-repeat) {
+    svg-sprite-image($svg-sprite);
+    svg-sprite-position($svg-sprite);
+    svg-sprite-width($svg-sprite);
+    svg-sprite-height($svg-sprite);
+
+    background-repeat: $repeat;
   }
 {{/options.functions}}

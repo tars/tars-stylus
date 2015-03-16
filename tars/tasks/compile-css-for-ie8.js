@@ -15,14 +15,13 @@ var stylusFilesToConcatinate = [
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/libraries/**/*.styl',
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/libraries/**/*.css',
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/mixins.styl',
-        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/spritesStylus/sprite96.styl',
-        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/spritesStylus/sprite-ie.styl'
+        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/sprites-stylus/sprite_96.styl',
+        './markup/' + tarsConfig.fs.staticFolderName + '/less/sprites-stylus/sprite-png-ie.styl'
     ];
 
     if (tarsConfig.useSVG) {
         stylusFilesToConcatinate.push(
-            './markup/' + tarsConfig.fs.staticFolderName + '/stylus/spritesStylus/svg-fallback-sprite.styl',
-            './markup/' + tarsConfig.fs.staticFolderName + '/stylus/spritesStylus/svg-sprite-ie.styl'
+            './markup/' + tarsConfig.fs.staticFolderName + '/stylus/sprites-stylus/svg-fallback-sprite.styl'
         );
     }
 
