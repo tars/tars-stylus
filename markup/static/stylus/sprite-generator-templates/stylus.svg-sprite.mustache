@@ -1,21 +1,6 @@
 {{#sprites}}
-  ${{fileName}}-offset-x = {{x}}{{units}};
-  ${{fileName}}-offset-y = {{y}}{{units}};
-  ${{fileName}}-width = {{w}}{{units}};
-  ${{fileName}}-height = {{h}}{{units}};
-  ${{fileName}}-total-width = {{width}}{{units}};
-  ${{fileName}}-total-height = {{height}}{{units}};
-  ${{fileName}}-image = '{{{cssPathSvg}}}';
   ${{fileName}} = {{x}}{{units}} {{y}}{{units}} {{w}}{{units}} {{h}}{{units}} {{width}}{{units}} {{height}}{{units}} '{{{cssPathSvg}}}' '{{{fileName}}}';
 {{/sprites}}
-
-svg-sprite-width($svg-sprite) {
-  width: $svg-sprite[2];
-}
-
-svg-sprite-height($svg-sprite) {
-  height: $svg-sprite[3];
-}
 
 svg-sprite-position($svg-sprite) {
   $svg-sprite-offset-x = $svg-sprite[0];
@@ -26,8 +11,8 @@ svg-sprite-position($svg-sprite) {
 bg-svg($svg-sprite, $repeat = no-repeat) {
     background-image: url('%=staticPrefixForCss=%svg-sprite/sprite.svg');
     svg-sprite-position($svg-sprite);
-    svg-sprite-width($svg-sprite);
-    svg-sprite-height($svg-sprite);
+    width: $svg-sprite[2];
+    height: $svg-sprite[3];
 
     background-repeat: $repeat;
 }
