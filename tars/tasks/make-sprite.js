@@ -63,5 +63,5 @@ module.exports = function (buildOptions) {
                 .pipe(
                     notifier('Stylus for sprites is ready')
                 );
-        });
+    });
 };
