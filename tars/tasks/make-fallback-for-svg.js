@@ -9,9 +9,9 @@ var notifier = require('../../helpers/notifier');
  * Make sprite for svg-fallback and stylus for this sprite
  * @param  {Object} buildOptions
  */
-module.exports = function(buildOptions) {
+module.exports = function (buildOptions) {
 
-    return gulp.task('css:make-fallback-for-svg', function(cb) {
+    return gulp.task('css:make-fallback-for-svg', function (cb) {
 
         var spriteData = '';
 

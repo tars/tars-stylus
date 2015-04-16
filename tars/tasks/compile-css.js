@@ -49,7 +49,7 @@ stylusFilesToConcatinate.push(
  * Stylus compilation
  * @param  {Object} buildOptions
  */
-module.exports = function(buildOptions) {
+module.exports = function (buildOptions) {
 
     var patterns = [];
 
@@ -60,7 +60,7 @@ module.exports = function(buildOptions) {
         }
     );
 
-    return gulp.task('css:compile-css', function() {
+    return gulp.task('css:compile-css', function () {
 
         helperStream = gulp.src(stylusFilesToConcatinate);
         mainStream = helperStream.pipe(addsrc.append('./markup/' + tarsConfig.fs.staticFolderName + '/stylus/etc/**/*.styl'));
@@ -95,7 +95,7 @@ module.exports = function(buildOptions) {
                 return '\nAn error occurred while autoprefixing css.\nLook in the console for details.\n' + error;
             }))
             .pipe(gulp.dest('./dev/' + tarsConfig.fs.staticFolderName + '/css/'))
-            .pipe(browserSync.reload({stream:true}))
+            .pipe(browserSync.reload({ stream: true }))
             .pipe(
                 notifier('Stylus-files\'ve been compiled')
             );
@@ -116,7 +116,7 @@ module.exports = function(buildOptions) {
                 return '\nAn error occurred while autoprefixing css.\nLook in the console for details.\n' + error;
             }))
             .pipe(gulp.dest('./dev/' + tarsConfig.fs.staticFolderName + '/css/'))
-            .pipe(browserSync.reload({stream:true}))
+            .pipe(browserSync.reload({ stream: true }))
             .pipe(
                 notifier('Stylus-files for ie9 have been compiled')
             );

@@ -19,29 +19,29 @@ var stylusFilesToConcatinate = [
         './markup/' + tarsConfig.fs.staticFolderName + '/stylus/sprites-stylus/sprite-png-ie.styl'
     ];
 
-    if (tarsConfig.useSVG) {
-        stylusFilesToConcatinate.push(
-            './markup/' + tarsConfig.fs.staticFolderName + '/stylus/sprites-stylus/svg-fallback-sprite.styl'
-        );
-    }
-
+if (tarsConfig.useSVG) {
     stylusFilesToConcatinate.push(
-        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/fonts.styl',
-        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/vars.styl',
-        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/GUI.styl',
-        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/common.styl',
-        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/plugins/**/*.styl',
-        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/plugins/**/*.css',
-        './markup/modules/*/*.styl',
-        './markup/modules/*/ie/ie8.styl',
-        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/etc/**/*.styl'
+        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/sprites-stylus/svg-fallback-sprite.styl'
     );
+}
+
+stylusFilesToConcatinate.push(
+    './markup/' + tarsConfig.fs.staticFolderName + '/stylus/fonts.styl',
+    './markup/' + tarsConfig.fs.staticFolderName + '/stylus/vars.styl',
+    './markup/' + tarsConfig.fs.staticFolderName + '/stylus/GUI.styl',
+    './markup/' + tarsConfig.fs.staticFolderName + '/stylus/common.styl',
+    './markup/' + tarsConfig.fs.staticFolderName + '/stylus/plugins/**/*.styl',
+    './markup/' + tarsConfig.fs.staticFolderName + '/stylus/plugins/**/*.css',
+    './markup/modules/*/*.styl',
+    './markup/modules/*/ie/ie8.styl',
+    './markup/' + tarsConfig.fs.staticFolderName + '/stylus/etc/**/*.styl'
+);
 
 /**
  * Stylus compilation for ie8
  * @param  {Object} buildOptions
  */
-module.exports = function(buildOptions) {
+module.exports = function (buildOptions) {
 
     var patterns = [];
 
@@ -52,7 +52,7 @@ module.exports = function(buildOptions) {
         }
     );
 
-    return gulp.task('css:compile-css-for-ie8', function(cb) {
+    return gulp.task('css:compile-css-for-ie8', function (cb) {
         if (gutil.env.ie8) {
             return gulp.src(stylusFilesToConcatinate)
                 .pipe(plumber())
@@ -70,7 +70,7 @@ module.exports = function(buildOptions) {
                     return '\nAn error occurred while autoprefixing css.\nLook in the console for details.\n' + error;
                 }))
                 .pipe(gulp.dest('./dev/' + tarsConfig.fs.staticFolderName + '/css/'))
-                .pipe(browserSync.reload({stream:true}))
+                .pipe(browserSync.reload({ stream: true }))
                 .pipe(
                     notifier('Styl-files for ie8 have been compiled')
                 );
