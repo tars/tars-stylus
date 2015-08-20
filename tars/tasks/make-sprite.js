@@ -44,8 +44,7 @@ module.exports = function (buildOptions) {
                                 dpi288: dpi288,
                                 dpi384: dpi384
                             },
-                            cssTemplate: './markup/' + tarsConfig.fs.staticFolderName + '/stylus/sprite-generator-templates/stylus.sprite.mustache',
-                            engine: 'phantomjssmith'
+                            cssTemplate: './markup/' + tarsConfig.fs.staticFolderName + '/stylus/sprite-generator-templates/stylus.sprite.mustache'
                         }
                     )
                 )
