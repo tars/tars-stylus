@@ -1,62 +1,62 @@
-var gulp = require('gulp');
-var concat = require('gulp-concat');
-var stylus = require('gulp-stylus');
-var gutil = require('gulp-util');
-var plumber = require('gulp-plumber');
-var autoprefix = require('gulp-autoprefixer');
-var replace = require('gulp-replace-task');
-var notify = require('gulp-notify');
-var tarsConfig = require('../../../tars-config');
-var notifier = require('../../helpers/notifier');
-var browserSync = require('browser-sync');
+'use strict';
 
+var gulp = tars.packages.gulp;
+var gutil = tars.packages.gutil;
+var concat = tars.packages.concat;
+var stylus = tars.packages.stylus;
+var plumber = tars.packages.plumber;
+var autoprefixer = tars.packages.autoprefixer;
+var replace = tars.packages.replace;
+var notify = tars.packages.notify;
+var notifier = tars.helpers.notifier;
+var browserSync = tars.packages.browserSync;
+
+var stylusFolderPath = './markup/' + tars.config.fs.staticFolderName + '/stylus';
 var stylusFilesToConcatinate = [
-        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/normalize.styl',
-        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/libraries/**/*.styl',
-        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/libraries/**/*.css',
-        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/mixins.styl',
-        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/sprites-stylus/sprite_96.styl',
-        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/sprites-stylus/sprite-png-ie.styl'
+        stylusFolderPath + '/normalize.styl',
+        stylusFolderPath + '/libraries/**/*.styl',
+        stylusFolderPath + '/libraries/**/*.css',
+        stylusFolderPath + '/mixins.styl',
+        stylusFolderPath + '/sprites-stylus/sprite_96.styl',
+        stylusFolderPath + '/sprites-stylus/sprite-png-ie.styl'
     ];
+var patterns = [];
 
-if (tarsConfig.useSVG) {
+if (tars.config.useSVG) {
     stylusFilesToConcatinate.push(
-        './markup/' + tarsConfig.fs.staticFolderName + '/stylus/sprites-stylus/svg-fallback-sprite.styl'
+        stylusFolderPath + '/sprites-stylus/svg-fallback-sprite.styl'
     );
 }
 
 stylusFilesToConcatinate.push(
-    './markup/' + tarsConfig.fs.staticFolderName + '/stylus/fonts.styl',
-    './markup/' + tarsConfig.fs.staticFolderName + '/stylus/vars.styl',
-    './markup/' + tarsConfig.fs.staticFolderName + '/stylus/GUI.styl',
-    './markup/' + tarsConfig.fs.staticFolderName + '/stylus/common.styl',
-    './markup/' + tarsConfig.fs.staticFolderName + '/stylus/plugins/**/*.styl',
-    './markup/' + tarsConfig.fs.staticFolderName + '/stylus/plugins/**/*.css',
+    stylusFolderPath + '/fonts.styl',
+    stylusFolderPath + '/vars.styl',
+    stylusFolderPath + '/GUI.styl',
+    stylusFolderPath + '/common.styl',
+    stylusFolderPath + '/plugins/**/*.styl',
+    stylusFolderPath + '/plugins/**/*.css',
     './markup/modules/*/*.styl',
     './markup/modules/*/ie/ie8.styl',
-    './markup/' + tarsConfig.fs.staticFolderName + '/stylus/etc/**/*.styl'
+    stylusFolderPath + '/etc/**/*.styl'
+);
+
+patterns.push(
+    {
+        match: '%=staticPrefixForCss=%',
+        replacement: tars.config.staticPrefixForCss()
+    }
 );
 
 /**
  * Stylus compilation for ie8
- * @param  {Object} buildOptions
  */
-module.exports = function (buildOptions) {
-
-    var patterns = [];
-
-    patterns.push(
-        {
-            match: '%=staticPrefixForCss=%',
-            replacement: tarsConfig.staticPrefixForCss()
-        }
-    );
+module.exports = function () {
 
     return gulp.task('css:compile-css-for-ie8', function (cb) {
-        if (gutil.env.ie8) {
+        if (tars.flags.ie8) {
             return gulp.src(stylusFilesToConcatinate)
                 .pipe(plumber())
-                .pipe(concat('main_ie8' + buildOptions.hash + '.styl'))
+                .pipe(concat('main_ie8' + tars.options.build.hash + '.styl'))
                 .pipe(replace({
                     patterns: patterns,
                     usePrefix: false
@@ -69,7 +69,7 @@ module.exports = function (buildOptions) {
                 .on('error', notify.onError(function (error) {
                     return '\nAn error occurred while autoprefixing css.\nLook in the console for details.\n' + error;
                 }))
-                .pipe(gulp.dest('./dev/' + tarsConfig.fs.staticFolderName + '/css/'))
+                .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
                 .pipe(
                     notifier('Styl-files for ie8 have been compiled')
