@@ -13,6 +13,7 @@ var notify = tars.packages.notify;
 var notifier = tars.helpers.notifier;
 var browserSync = tars.packages.browserSync;
 
+var postcssProcessors = tars.config.postcss;
 var stylusFolderPath = './markup/' + tars.config.fs.staticFolderName + '/stylus';
 var stylusFilesToConcatinate = [
         stylusFolderPath + '/normalize.styl',
@@ -27,8 +28,10 @@ var processors = [
     autoprefixer({browsers: ['ie 8']})
 ];
 
-if (tars.config.postprocessors && tars.config.postprocessors.length) {
-    processors.push(tars.config.postprocessors);
+if (postcssProcessors && postcssProcessors.length) {
+    postcssProcessors.forEach(function (processor) {
+        processors.push(require(processor.name)(processor.options));
+    });
 }
 
 if (tars.config.useSVG) {
