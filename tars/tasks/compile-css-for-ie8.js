@@ -2,6 +2,7 @@
 
 var gulp = tars.packages.gulp;
 var gutil = tars.packages.gutil;
+var gulpif = tars.packages.gulpif;
 var concat = tars.packages.concat;
 var stylus = tars.packages.stylus;
 var plumber = tars.packages.plumber;
@@ -9,6 +10,8 @@ var autoprefixer = tars.packages.autoprefixer;
 tars.packages.promisePolyfill.polyfill();
 var postcss = tars.packages.postcss;
 var replace = tars.packages.replace;
+var sourcemaps = tars.packages.sourcemaps;
+var gulpif = tars.packages.gulpif;
 var notify = tars.packages.notify;
 var notifier = tars.helpers.notifier;
 var browserSync = tars.packages.browserSync;
@@ -24,15 +27,16 @@ var stylusFilesToConcatinate = [
         stylusFolderPath + '/sprites-stylus/sprite-png-ie.styl'
     ];
 var patterns = [];
-var processors = [
-    autoprefixer({browsers: ['ie 8']})
-];
+var processors = [];
+var generateSourceMaps = tars.config.sourcemaps.css && !tars.flags.release && !tars.flags.min;
 
 if (postcssProcessors && postcssProcessors.length) {
     postcssProcessors.forEach(function (processor) {
         processors.push(require(processor.name)(processor.options));
     });
 }
+
+processors.push(autoprefixer({browsers: ['ie 8']}));
 
 if (tars.config.useSVG) {
     stylusFilesToConcatinate.push(
@@ -49,7 +53,9 @@ stylusFilesToConcatinate.push(
     stylusFolderPath + '/plugins/**/*.css',
     './markup/modules/*/*.styl',
     './markup/modules/*/ie/ie8.styl',
-    stylusFolderPath + '/etc/**/*.styl'
+    stylusFolderPath + '/etc/**/*.styl',
+    '!./**/_*.styl',
+    '!./**/_*.css'
 );
 
 patterns.push(
@@ -65,10 +71,11 @@ patterns.push(
 module.exports = function () {
 
     return gulp.task('css:compile-css-for-ie8', function (cb) {
-        if (tars.flags.ie8) {
-            return gulp.src(stylusFilesToConcatinate)
+        if (tars.flags.ie8 || tars.flags.ie) {
+            return gulp.src(stylusFilesToConcatinate, { base: process.cwd() })
                 .pipe(plumber())
-                .pipe(concat('main_ie8' + tars.options.build.hash + '.styl'))
+                .pipe(gulpif(generateSourceMaps, sourcemaps.init()))
+                .pipe(concat({cwd: process.cwd(), path: 'main_ie8' + tars.options.build.hash + '.styl'}))
                 .pipe(replace({
                     patterns: patterns,
                     usePrefix: false
@@ -81,6 +88,7 @@ module.exports = function () {
                 .on('error', notify.onError(function (error) {
                     return '\nAn error occurred while postprocessing css.\nLook in the console for details.\n' + error;
                 }))
+                .pipe(gulpif(generateSourceMaps, sourcemaps.write()))
                 .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
                 .pipe(
