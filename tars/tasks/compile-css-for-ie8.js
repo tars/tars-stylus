@@ -28,7 +28,8 @@ var stylusFilesToConcatinate = [
     ];
 var patterns = [];
 var processors = [];
-var generateSourceMaps = tars.config.sourcemaps.css && !tars.flags.release && !tars.flags.min;
+var generateSourceMaps = tars.config.sourcemaps.css.active && !tars.flags.release && !tars.flags.min;
+var sourceMapsDest = tars.config.sourcemaps.css.inline ? '' : '.';
 
 if (postcssProcessors && postcssProcessors.length) {
     postcssProcessors.forEach(function (processor) {
@@ -88,7 +89,7 @@ module.exports = function () {
                 .on('error', notify.onError(function (error) {
                     return '\nAn error occurred while postprocessing css.\nLook in the console for details.\n' + error;
                 }))
-                .pipe(gulpif(generateSourceMaps, sourcemaps.write()))
+                .pipe(gulpif(generateSourceMaps, sourcemaps.write(sourceMapsDest)))
                 .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
                 .pipe(
