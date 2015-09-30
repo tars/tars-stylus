@@ -90,35 +90,33 @@ module.exports = function () {
         if (tars.flags.ie9 || tars.flags.ie) {
             ie9Stream
                 .pipe(plumber())
-                .pipe(gulpif(generateSourceMaps, sourcemaps.init()))
-                .pipe(concat({cwd: process.cwd(), path: 'main_ie9' + tars.options.build.hash + '.styl'}))
                 .pipe(replace({
                     patterns: patterns,
                     usePrefix: false
                 }))
+                .pipe(concat({cwd: process.cwd(), path: 'main_ie9' + tars.options.build.hash + '.styl'}))
                 .pipe(stylus())
                 .on('error', notify.onError(function (error) {
-                    return '\nAn error occurred while compiling css for ie9.\nLook in the console for details.\n' + error;
+                    return '\nAn error occurred while compiling css for IE9.\nLook in the console for details.\n' + error;
                 }))
                 .pipe(postcss(processorsIE9))
                 .on('error', notify.onError(function (error) {
                     return '\nAn error occurred while postprocessing css.\nLook in the console for details.\n' + error;
                 }))
-                .pipe(gulpif(generateSourceMaps, sourcemaps.write(sourceMapsDest)))
                 .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
                 .pipe(
-                    notifier('Stylus-files for ie9 have been compiled')
+                    notifier('Stylus-files for IE9 have been compiled')
                 );
         }
 
         return mainStream
             .pipe(gulpif(generateSourceMaps, sourcemaps.init()))
-            .pipe(concat({cwd: process.cwd(), path: 'main' + tars.options.build.hash + '.styl'}))
             .pipe(replace({
                 patterns: patterns,
                 usePrefix: false
             }))
+            .pipe(concat({cwd: process.cwd(), path: 'main' + tars.options.build.hash + '.styl'}))
             .pipe(stylus())
             .on('error', notify.onError(function (error) {
                 return '\nAn error occurred while compiling css.\nLook in the console for details.\n' + error;

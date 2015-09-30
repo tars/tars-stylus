@@ -2,7 +2,6 @@
 
 var gulp = tars.packages.gulp;
 var gutil = tars.packages.gutil;
-var gulpif = tars.packages.gulpif;
 var concat = tars.packages.concat;
 var stylus = tars.packages.stylus;
 var plumber = tars.packages.plumber;
@@ -10,8 +9,6 @@ var autoprefixer = tars.packages.autoprefixer;
 tars.packages.promisePolyfill.polyfill();
 var postcss = tars.packages.postcss;
 var replace = tars.packages.replace;
-var sourcemaps = tars.packages.sourcemaps;
-var gulpif = tars.packages.gulpif;
 var notify = tars.packages.notify;
 var notifier = tars.helpers.notifier;
 var browserSync = tars.packages.browserSync;
@@ -28,8 +25,6 @@ var stylusFilesToConcatinate = [
     ];
 var patterns = [];
 var processors = [];
-var generateSourceMaps = tars.config.sourcemaps.css.active && !tars.flags.release && !tars.flags.min;
-var sourceMapsDest = tars.config.sourcemaps.css.inline ? '' : '.';
 
 if (postcssProcessors && postcssProcessors.length) {
     postcssProcessors.forEach(function (processor) {
@@ -75,28 +70,26 @@ module.exports = function () {
         if (tars.flags.ie8 || tars.flags.ie) {
             return gulp.src(stylusFilesToConcatinate, { base: process.cwd() })
                 .pipe(plumber())
-                .pipe(gulpif(generateSourceMaps, sourcemaps.init()))
-                .pipe(concat({cwd: process.cwd(), path: 'main_ie8' + tars.options.build.hash + '.styl'}))
                 .pipe(replace({
                     patterns: patterns,
                     usePrefix: false
                 }))
+                .pipe(concat({cwd: process.cwd(), path: 'main_ie8' + tars.options.build.hash + '.styl'}))
                 .pipe(stylus())
                 .on('error', notify.onError(function (error) {
-                    return '\nAn error occurred while compiling css for ie8.\nLook in the console for details.\n' + error;
+                    return '\nAn error occurred while compiling css for IE8.\nLook in the console for details.\n' + error;
                 }))
                 .pipe(postcss(processors))
                 .on('error', notify.onError(function (error) {
                     return '\nAn error occurred while postprocessing css.\nLook in the console for details.\n' + error;
                 }))
-                .pipe(gulpif(generateSourceMaps, sourcemaps.write(sourceMapsDest)))
                 .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
                 .pipe(
-                    notifier('Styl-files for ie8 have been compiled')
+                    notifier('Styl-files for IE8 have been compiled')
                 );
         } else {
-            gutil.log('!Stylies for ie8 are not used!');
+            gutil.log('!Stylies for IE8 are not used!');
             cb(null);
         }
     });
