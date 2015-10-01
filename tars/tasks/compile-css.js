@@ -11,7 +11,6 @@ var postcss = tars.packages.postcss;
 var addsrc = tars.packages.addsrc;
 var replace = tars.packages.replace;
 var sourcemaps = tars.packages.sourcemaps;
-var notify = tars.packages.notify;
 var notifier = tars.helpers.notifier;
 var browserSync = tars.packages.browserSync;
 
@@ -89,47 +88,46 @@ module.exports = function () {
 
         if (tars.flags.ie9 || tars.flags.ie) {
             ie9Stream
-                .pipe(plumber())
+                .pipe(plumber({
+                    errorHandler: function (error) {
+                        notifier.error('An error occurred while compiling css for IE9.', error);
+                        this.emit('end');
+                    }
+                }))
                 .pipe(replace({
                     patterns: patterns,
                     usePrefix: false
                 }))
                 .pipe(concat({cwd: process.cwd(), path: 'main_ie9' + tars.options.build.hash + '.styl'}))
                 .pipe(stylus())
-                .on('error', notify.onError(function (error) {
-                    return '\nAn error occurred while compiling css for IE9.\nLook in the console for details.\n' + error;
-                }))
                 .pipe(postcss(processorsIE9))
-                .on('error', notify.onError(function (error) {
-                    return '\nAn error occurred while postprocessing css.\nLook in the console for details.\n' + error;
-                }))
                 .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
                 .pipe(
-                    notifier('Stylus-files for IE9 have been compiled')
+                    notifier.success('Stylus-files for IE9 have been compiled')
                 );
         }
 
         return mainStream
-            .pipe(gulpif(generateSourceMaps, sourcemaps.init()))
-            .pipe(replace({
-                patterns: patterns,
-                usePrefix: false
-            }))
-            .pipe(concat({cwd: process.cwd(), path: 'main' + tars.options.build.hash + '.styl'}))
-            .pipe(stylus())
-            .on('error', notify.onError(function (error) {
-                return '\nAn error occurred while compiling css.\nLook in the console for details.\n' + error;
-            }))
-            .pipe(postcss(processors))
-            .on('error', notify.onError(function (error) {
-                return '\nAn error occurred while postprocessing css.\nLook in the console for details.\n' + error;
-            }))
-            .pipe(gulpif(generateSourceMaps, sourcemaps.write(sourceMapsDest)))
-            .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
-            .pipe(browserSync.reload({ stream: true }))
-            .pipe(
-                notifier('Stylus-files\'ve been compiled')
-            );
+                .pipe(plumber({
+                    errorHandler: function (error) {
+                        notifier.error('An error occurred while compiling css.', error);
+                        this.emit('end');
+                    }
+                }))
+                .pipe(gulpif(generateSourceMaps, sourcemaps.init()))
+                .pipe(replace({
+                    patterns: patterns,
+                    usePrefix: false
+                }))
+                .pipe(concat({cwd: process.cwd(), path: 'main' + tars.options.build.hash + '.styl'}))
+                .pipe(stylus())
+                .pipe(postcss(processors))
+                .pipe(gulpif(generateSourceMaps, sourcemaps.write(sourceMapsDest)))
+                .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
+                .pipe(browserSync.reload({ stream: true }))
+                .pipe(
+                    notifier.success('Stylus-files\'ve been compiled')
+                );
     });
 };

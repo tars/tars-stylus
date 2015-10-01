@@ -9,7 +9,7 @@ var autoprefixer = tars.packages.autoprefixer;
 tars.packages.promisePolyfill.polyfill();
 var postcss = tars.packages.postcss;
 var replace = tars.packages.replace;
-var notify = tars.packages.notify;
+var plumber = tars.packages.plumber;
 var notifier = tars.helpers.notifier;
 var browserSync = tars.packages.browserSync;
 
@@ -69,24 +69,23 @@ module.exports = function () {
     return gulp.task('css:compile-css-for-ie8', function (cb) {
         if (tars.flags.ie8 || tars.flags.ie) {
             return gulp.src(stylusFilesToConcatinate, { base: process.cwd() })
-                .pipe(plumber())
+                .pipe(plumber({
+                    errorHandler: function (error) {
+                        notifier.error('An error occurred while compiling css for IE8.', error);
+                        this.emit('end');
+                    }
+                }))
                 .pipe(replace({
                     patterns: patterns,
                     usePrefix: false
                 }))
                 .pipe(concat({cwd: process.cwd(), path: 'main_ie8' + tars.options.build.hash + '.styl'}))
                 .pipe(stylus())
-                .on('error', notify.onError(function (error) {
-                    return '\nAn error occurred while compiling css for IE8.\nLook in the console for details.\n' + error;
-                }))
                 .pipe(postcss(processors))
-                .on('error', notify.onError(function (error) {
-                    return '\nAn error occurred while postprocessing css.\nLook in the console for details.\n' + error;
-                }))
                 .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
                 .pipe(
-                    notifier('Styl-files for IE8 have been compiled')
+                    notifier.success('Styl-files for IE8 have been compiled')
                 );
         } else {
             gutil.log('!Stylies for IE8 are not used!');
