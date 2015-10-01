@@ -98,9 +98,12 @@ module.exports = function () {
                     patterns: patterns,
                     usePrefix: false
                 }))
-                .pipe(concat({cwd: process.cwd(), path: 'main_ie9' + tars.options.build.hash + '.styl'}))
-                .pipe(stylus())
+                .pipe(stylus({
+                    'resolve url': true,
+                    'include css': true
+                }))
                 .pipe(postcss(processorsIE9))
+                .pipe(concat('main_ie9' + tars.options.build.hash + '.css'))
                 .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
                 .pipe(
@@ -120,9 +123,12 @@ module.exports = function () {
                     patterns: patterns,
                     usePrefix: false
                 }))
-                .pipe(concat({cwd: process.cwd(), path: 'main' + tars.options.build.hash + '.styl'}))
-                .pipe(stylus())
+                .pipe(stylus({
+                    'resolve url': true,
+                    'include css': true
+                }))
                 .pipe(postcss(processors))
+                .pipe(concat('main' + tars.options.build.hash + '.css'))
                 .pipe(gulpif(generateSourceMaps, sourcemaps.write(sourceMapsDest)))
                 .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
