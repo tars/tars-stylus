@@ -9,6 +9,7 @@ var autoprefixer = tars.packages.autoprefixer;
 tars.packages.promisePolyfill.polyfill();
 var postcss = tars.packages.postcss;
 var replace = tars.packages.replace;
+var importify = tars.packages.importify;
 var plumber = tars.packages.plumber;
 var notifier = tars.helpers.notifier;
 var browserSync = tars.packages.browserSync;
@@ -75,16 +76,19 @@ module.exports = function () {
                         this.emit('end');
                     }
                 }))
-                .pipe(concat('main_ie8' + tars.options.build.hash + '.styl'))
-                .pipe(replace({
-                    patterns: patterns,
-                    usePrefix: false
+                .pipe(importify('main_ie8.styl', {
+                    cssPreproc: 'stylus'
                 }))
                 .pipe(stylus({
                     'resolve url': true,
                     'include css': true
                 }))
+                .pipe(replace({
+                    patterns: patterns,
+                    usePrefix: false
+                }))
                 .pipe(postcss(processors))
+                .pipe(concat('main_ie8' + tars.options.build.hash + '.css'))
                 .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
                 .pipe(

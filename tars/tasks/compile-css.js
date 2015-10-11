@@ -8,8 +8,8 @@ var plumber = tars.packages.plumber;
 var autoprefixer = tars.packages.autoprefixer;
 tars.packages.promisePolyfill.polyfill();
 var postcss = tars.packages.postcss;
-var addsrc = tars.packages.addsrc;
 var replace = tars.packages.replace;
+var importify = tars.packages.importify;
 var sourcemaps = tars.packages.sourcemaps;
 var notifier = tars.helpers.notifier;
 var browserSync = tars.packages.browserSync;
@@ -24,6 +24,7 @@ var stylusFilesToConcatinate = [
         stylusFolderPath + '/sprites-stylus/sprite_96.styl',
         stylusFolderPath + '/sprites-stylus/sprite-png.styl'
     ];
+var stylusFilesToConcatinateForIe9;
 var patterns = [];
 var processors = [];
 var processorsIE9 = [];
@@ -63,6 +64,14 @@ stylusFilesToConcatinate.push(
     '!./**/_*.css'
 );
 
+stylusFilesToConcatinateForIe9 = stylusFilesToConcatinate.slice();
+
+stylusFilesToConcatinate.push(stylusFolderPath + '/etc/**/*.styl');
+stylusFilesToConcatinateForIe9.push(
+    './markup/modules/*/ie/ie9.styl',
+    stylusFolderPath + '/etc/**/*.styl'
+);
+
 patterns.push(
     {
         match: '%=staticPrefixForCss=%',
@@ -77,14 +86,8 @@ module.exports = function () {
 
     return gulp.task('css:compile-css', function () {
 
-        var helperStream = gulp.src(stylusFilesToConcatinate, { base: process.cwd() });
-        var mainStream = helperStream.pipe(addsrc.append(stylusFolderPath + '/etc/**/*.styl'));
-        var ie9Stream = helperStream.pipe(
-                                addsrc.append([
-                                        './markup/modules/*/ie/ie9.styl',
-                                        stylusFolderPath + '/etc/**/*.styl'
-                                    ])
-                            );
+        var mainStream = gulp.src(stylusFilesToConcatinate, { base: process.cwd() });
+        var ie9Stream = gulp.src(stylusFilesToConcatinateForIe9, { base: process.cwd() });
 
         if (tars.flags.ie9 || tars.flags.ie) {
             ie9Stream
@@ -94,16 +97,19 @@ module.exports = function () {
                         this.emit('end');
                     }
                 }))
-                .pipe(concat('main_ie9' + tars.options.build.hash + '.styl'))
-                .pipe(replace({
-                    patterns: patterns,
-                    usePrefix: false
+                .pipe(importify('main_ie9.styl', {
+                    cssPreproc: 'stylus'
                 }))
                 .pipe(stylus({
                     'resolve url': true,
                     'include css': true
                 }))
+                .pipe(replace({
+                    patterns: patterns,
+                    usePrefix: false
+                }))
                 .pipe(postcss(processorsIE9))
+                .pipe(concat('main_ie9' + tars.options.build.hash + '.css'))
                 .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
                 .pipe(
@@ -119,16 +125,19 @@ module.exports = function () {
                     }
                 }))
                 .pipe(gulpif(generateSourceMaps, sourcemaps.init()))
-                .pipe(concat('main' + tars.options.build.hash + '.styl'))
-                .pipe(replace({
-                    patterns: patterns,
-                    usePrefix: false
+                .pipe(importify('main.styl', {
+                    cssPreproc: 'stylus'
                 }))
                 .pipe(stylus({
                     'resolve url': true,
                     'include css': true
                 }))
+                .pipe(replace({
+                    patterns: patterns,
+                    usePrefix: false
+                }))
                 .pipe(postcss(processors))
+                .pipe(concat('main' + tars.options.build.hash + '.css'))
                 .pipe(gulpif(generateSourceMaps, sourcemaps.write(sourceMapsDest)))
                 .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
