@@ -18,8 +18,7 @@ var postcssProcessors = tars.config.postcss;
 var stylusFolderPath = './markup/' + tars.config.fs.staticFolderName + '/stylus';
 var stylusFilesToConcatinate = [
         stylusFolderPath + '/normalize.styl',
-        stylusFolderPath + '/libraries/**/*.styl',
-        stylusFolderPath + '/libraries/**/*.css',
+        stylusFolderPath + '/libraries/**/*.{styl,css}',
         stylusFolderPath + '/mixins.styl',
         stylusFolderPath + '/sprites-stylus/sprite_96.styl',
         stylusFolderPath + '/sprites-stylus/sprite-png.styl'
@@ -56,20 +55,18 @@ stylusFilesToConcatinate.push(
     stylusFolderPath + '/fonts.styl',
     stylusFolderPath + '/vars.styl',
     stylusFolderPath + '/GUI.styl',
-    stylusFolderPath + '/common.styl',
-    stylusFolderPath + '/plugins/**/*.styl',
-    stylusFolderPath + '/plugins/**/*.css',
+    stylusFolderPath + '/common.{styl,css}',
+    stylusFolderPath + '/plugins/**/*.{styl,css}',
     './markup/modules/*/*.styl',
-    '!./**/_*.styl',
-    '!./**/_*.css'
+    '!./**/_*.{styl,css}',
 );
 
 stylusFilesToConcatinateForIe9 = stylusFilesToConcatinate.slice();
 
-stylusFilesToConcatinate.push(stylusFolderPath + '/etc/**/*.styl');
+stylusFilesToConcatinate.push(stylusFolderPath + '/etc/**/*.{styl,css}');
 stylusFilesToConcatinateForIe9.push(
     './markup/modules/*/ie/ie9.styl',
-    stylusFolderPath + '/etc/**/*.styl'
+    stylusFolderPath + '/etc/**/*.{styl,css}'
 );
 
 patterns.push(
