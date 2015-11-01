@@ -49,7 +49,7 @@ stylusFilesToConcatinate.push(
     './markup/modules/*/*.styl',
     './markup/modules/*/ie/ie8.styl',
     stylusFolderPath + '/etc/**/*.{styl,css}',
-    '!./**/_*.{styl,css}',
+    '!./**/_*.{styl,css}'
 );
 
 patterns.push(

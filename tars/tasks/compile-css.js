@@ -58,7 +58,7 @@ stylusFilesToConcatinate.push(
     stylusFolderPath + '/common.{styl,css}',
     stylusFolderPath + '/plugins/**/*.{styl,css}',
     './markup/modules/*/*.styl',
-    '!./**/_*.{styl,css}',
+    '!./**/_*.{styl,css}'
 );
 
 stylusFilesToConcatinateForIe9 = stylusFilesToConcatinate.slice();
